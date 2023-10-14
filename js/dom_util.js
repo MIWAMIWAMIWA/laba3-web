@@ -19,28 +19,31 @@ const itemTemplate = ({ id, name,  number, power}) => `
     </div>
 </li>`;
 
-export const addItemToPage = ({ id, name, number, power}, onRemoveItem) => {
+export const addItemToPage = ({ id, name, number, power}, onRemoveItem,onEditItem ) => {
     itemsContainer.insertAdjacentHTML(
         "afterbegin",
         itemTemplate({ id, name, number, power})
     );
 
     const removeButton = document.getElementById(`${REMOVE_BUTTON_PREFIX}${id}`);
-
+    const editButton = document.getElementById(`${EDIT_BUTTON_PREFIX}${id}`);
     removeButton.addEventListener("click", () => {
         onRemoveItem(id);
     });
+    editButton.addEventListener("click", () => {
+    onEditItem(id);
+  });
 };
 
-export const renderItemsList = (items, onRemoveItem) => {
+
+export const renderItemsList = (items, onRemoveItem,onEditItem) => {
   itemsContainer.innerHTML = "";
 
   if (sortStadiumsCheckBox.checked) {
     items.sort((a, b) => a.power - b.power);
   }
-
   for (const item of items) {
-    addItemToPage(item, onRemoveItem);
+    addItemToPage(item, onRemoveItem,onEditItem);
   }
 };
 
@@ -57,3 +60,10 @@ export const getInputValues = () => {
         power: powerInput.value,
     };
 };
+
+export const fillInputValues = ({ name, number, power }) => {
+  nameInput.value = name;
+  numberInput.value = species;
+  powerInput.value = number_of_legs;
+};
+
