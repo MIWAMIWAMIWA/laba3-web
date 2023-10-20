@@ -2,8 +2,16 @@ import {
     renderItemsList,
     getInputValues,
     clearInputs,
-   fillInputValues
+  fillInputValues,
+  setPage,
+  changePage
 } from "./dom_util.js"
+import {
+  get_Stadiums,
+  post_Stadiums,
+  put_Stadiums,
+  delete_Stadium
+} from "./api.js"
 
 const countButton = document.getElementById("count_button");
 const middlePowerText = document.getElementById("middle_power");
@@ -19,32 +27,36 @@ const homePage = document.getElementById("home_page");
 const createPage = document.getElementById("create_page");
 const searchForm = document.getElementById("search_form");
 const createPageTitle = document.getElementById("create_page_title");
-
+const prevPage = document.getElementById("prev_page");
+const nextPage = document.getElementById("next_page");
 let editMode = false;
 let editItemId = "";
 
 let stadiums = [];
-let temp_stadium=[];
-const onRemoveItem = (id) => {
-    stadiums = stadiums.filter(
-        (stadium) => stadium.id !== id
-    );
-    refetchAllStadiums();
+const onRemoveItem = async (id) => {
+  await delete_Stadium(id);
+  refetchAllStadiums();
+  showHomePage();
+  setPage(0);
+  renderItemsList(stadiums, onRemoveItem, onEditItem);
 };
 
-const refetchAllStadiums = () => {
-  if(temp_stadium.length==0){
-    renderItemsList(stadiums, onRemoveItem, onEditItem);
-  }else{
-    renderItemsList(temp_stadium, onRemoveItem,onEditItem);
-  }
+const refetchAllStadiums  = async () => {
+
+  const allStadiums = await get_Stadiums();
+
+  stadiums = allStadiums;
+
+  setPage(0);
+
+  renderItemsList(stadiums, onRemoveItem, onEditItem);
 };
 
 const onEditItem = (id) => {
   editMode = true;
   editItemId = id;
 
-  const stadium = stadiums.find(({ id: insect_id }) => id == insect_id);
+  const stadium = stadiums.find(({ id: stadium_id }) => id == stadium_id);
 
   showCreatePage();
 
@@ -52,21 +64,6 @@ const onEditItem = (id) => {
 };
 
 
-
-const addItem = ({ name, number, power}) => {
-    const generatedId = uuid.v1();
-
-    const newItem = {
-        id: generatedId,
-        name,
-        number,
-        power,
-    };
-
-    stadiums.push(newItem);
-
-    refetchAllStadiums();
-};
 const showHomePage = () => {
   if (!homePageButton.classList.contains("selected_page")) {
     homePageButton.classList.add("selected_page");
@@ -96,11 +93,10 @@ const showCreatePage = () => {
 
   } else {
     createPageTitle.innerText = "Create Stadium";
-
   }
 };
 
-submitButton.addEventListener("click", (event) => {
+submitButton.addEventListener("click", async(event) => {
     event.preventDefault();
 
     const { name, number, power } = getInputValues();
@@ -109,7 +105,7 @@ submitButton.addEventListener("click", (event) => {
     return;
     }
 
-    if (power < 0 || number < 0) {
+    if (power < 1 || number < 1) {
     alert("the stadium cant have negative power of light or negative number of places");
     return;
     }
@@ -117,20 +113,30 @@ submitButton.addEventListener("click", (event) => {
     clearInputs();
 
    if (editMode) {
-    let stadium = stadiums.find(({ id: stadium_id }) => editItemId == stadium_id);
-    stadium.name = name;
-    stadium.power = power;
-    stadium.number=number;
-
+     const resp_stadiums = await put_Stadiums(editItemId,{
+       editItemId,
+       name,
+       number,
+       power
+     });
+     stadiums = resp_stadiums;
    } else {
-    addItem({ name, power,number });
+     const temp_id = uuid.v1();
+     const resp_stadiums = await post_Stadiums({
+       temp_id,
+       name,
+       number,
+       power
+     });
+     stadiums = resp_stadiums;
    }
 
-   showHomePage();
+
    editMode = false;
    editItemId = "";
-
-   refetchAllStadiums();
+   showHomePage();
+   setPage(0);
+   renderItemsList(stadiums, onRemoveItem, onEditItem);
 });
 
 cancelButton.addEventListener("click", () => {
@@ -143,22 +149,22 @@ cancelButton.addEventListener("click", () => {
 });
 
 searchButton.addEventListener("click", () => {
-    const foundStadiums = stadiums.filter(
+    stadiums = stadiums.filter(
         (stadium) => stadium.name.toLowerCase().search(searchInput.value.toLowerCase()) !== -1
     );
-    temp_stadium = foundStadiums;
-   renderItemsList(foundStadiums, onRemoveItem,onEditItem);
+  setPage(0);
+
+  renderItemsList(stadiums, onRemoveItem, onEditItem);
 
 });
 
 searchCancelButton.addEventListener("click", () => {
     refetchAllStadiums();
     searchInput.value = "";
-    temp_stadium=[];
 });
 
 sortStadiumsCheckBox.addEventListener("click", () => {
-    refetchAllStadiums();
+  renderItemsList(stadiums, onRemoveItem, onEditItem);
 });
 
 countButton.addEventListener("click", () => {
@@ -166,23 +172,25 @@ countButton.addEventListener("click", () => {
         return;
     }
     let sum = 0;
-    if (temp_stadium.length==0){
-      for (const stadium of stadiums) {
-        sum += Number(stadium.power);
-      }
-      middlePowerText.textContent = `${(sum / stadiums.length).toFixed(2)} power`;
-      refetchAllStadiums();
-    }else{
-      for (const stadium of temp_stadium) {
-        sum += Number(stadium.power);
-      }
-      middlePowerText.textContent = `${(sum / temp_stadium.length).toFixed(2)} power`;
-      refetchAllStadiums();
 
+    for (const stadium of stadiums) {
+      sum += Number(stadium.power);
     }
+    middlePowerText.textContent = `${(sum / stadiums.length).toFixed(2)} power`;
+
 
 });
+prevPage.addEventListener("click", () => {
+  changePage(-1);
 
+  renderItemsList(stadiums, onRemoveItem, onEditItem);
+});
+
+nextPage.addEventListener("click", () => {
+  changePage(1);
+
+  renderItemsList(stadiums, onRemoveItem, onEditItem);
+});
 
 homePageButton.addEventListener("click", () => {
   showHomePage();

@@ -34,7 +34,9 @@
             </nav>
         </header>
         <br>
-      <div id="home_page" style="display: flex;">
+      <div id="home_page">
+        <div class="loader" id="loader"></div>
+        <div style="display: flex;">
             <div class="w-25">
                 <h3 class="fw-light">Manage Stadiums</h3><br>
               <div class="form-check form-switch">
@@ -51,6 +53,15 @@
             <ul class="border-start d-flex flex-wrap justify-content-start align-content-start w-100 p-0" id="items_container">
             </ul>
         </div>
+        <nav class="d-flex justify-content-center" aria-label="Page navigation example">
+          <ul class="pagination">
+            <li class="page-item" id="prev_page"><a class="page-link" href="#prev">Previous</a></li>
+            <div class="d-flex mx-1" id="pagination">
+            </div>
+            <li class="page-item" id="next_page"><a class="page-link" href="#next">Next</a></li>
+          </ul>
+        </nav>
+      </div>
       <div id="create_page" class="justify-content-center" style="display: none;">
         <form class="w-25">
           <h2 class="text-center fw-bold mb-4" id="create_page_title">Create Stadium</h2>
@@ -59,12 +70,12 @@
               <input type="text" class="form-control" id="name_input" aria-describedby="emailHelp">
             </div>
             <div class="mb-3">
-              <label for="number_input" class="form-label">Number</label>
-              <input type="number" class="form-control" id="number_input">
+              <label for="number_input" class="form-label" >Number</label>
+              <input type="number" class="form-control" required min="0" id="number_input">
             </div>
             <div class="mb-3">
-              <label for="power_input" class="form-label">Power</label>
-              <input type="number" class="form-control w-50" id="power_input">
+              <label for="power_input" class="form-label" >Power</label>
+              <input type="number" class="form-control w-50" required min="0" id="power_input">
             </div>
           <button type="submit" class="btn btn-primary " id="submit_button">Submit</button>
           <button type="submit" class="btn btn-danger" id="cancel_button" style="display: none;">Cancel</button>
