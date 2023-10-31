@@ -24,9 +24,7 @@ export const Wrapper = styled.div`
     h1 {
         margin-top: 10px;
     }
-    div {
-        width: 400px;
-    }
+    
 `;
 
 export const IconsWrapper = styled.div`

@@ -1,14 +1,23 @@
 import styled from 'styled-components';
 
-
-export const IconBase = styled.div`
-  border-radius: 100%;
-  padding:10px;
+export const StyledLinkedImg = styled.div`
+  height: 30px;
+  width: 30px;
   background-color: white;
-  margin:auto;
-  margin: 0 10px;
   display:flex;
-  justifyContent: center;
-  alignItems: center;
-  
+  border-radius: 50%;
+  padding:10px;
+  margin: 0 10px;
+`;
+
+export const StyledLink = styled.a`
+  height: 30px;
+  width: 30px;
+  margin: auto;
+`;
+
+export const StyledImage = styled.img`
+  height: 30px;
+  width: 30px;
+  margin: auto;
 `;
