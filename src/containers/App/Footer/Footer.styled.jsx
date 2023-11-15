@@ -24,22 +24,12 @@ export const Wrapper = styled.div`
     h1 {
         margin-top: 10px;
     }
-    span { 
-        margin: 0 10px;
-    }
-    div {
-        width: 400px;
-    }
+    
 `;
 
 export const IconsWrapper = styled.div`
-  margin: 15px 0;
-  background-color: white;
   display: flex;
-  justify-content: space-around;
-  border-radius: 100%;
-  padding:10px;
-  
+  justify-content: center;
 `;
 
 
@@ -47,4 +37,11 @@ export const StyledText = styled.p`
     color: #8E8E93;
     margin-top: 15px;
     text-align: center;
+    color:black;
 `;
+
+export const LogoWr = styled.img`
+  alignItems: center;
+  margin:auto;`
+;
+

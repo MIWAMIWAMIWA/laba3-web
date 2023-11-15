@@ -1,14 +1,11 @@
 import React from "react";
 import logo from "../../../icons/logo.png";
-import { StyledFooter, IconsWrapper, Wrapper, StyledText } from "./Footer.styled";
+import { StyledFooter, IconsWrapper, Wrapper, StyledText ,LogoWr} from "./Footer.styled";
 import LinkedImg from "../../../containers/LinkedImg/LinkedImg";
-import Icon, {
-    TwitterOutlined,
-    YoutubeOutlined,
-    LinkedinOutlined,
-    FacebookOutlined,
-} from "@ant-design/icons";
-
+import facebook from "../../../icons/facebook.png";
+import gplus from "../../../icons/google-plus.png";
+import linkedin from "../../../icons/linkedin.png";
+import twitter from "../../../icons/twitter.png";
 function Footer() {
     return (
         <StyledFooter>
@@ -18,25 +15,42 @@ function Footer() {
                     <p>It is  known for its superior quality audio speakers</p>
                 </div>
                 
-                <img style ={{ alignItems: 'center',margin:"auto"}} src={logo} alt="" width={100}/>
+                <LogoWr src={logo} alt="" width={100}/>
 
-                <IconsWrapper style={{width:"50px",margin: "0 10px"}}>
-                    <LinkedImg href="https://www.facebook.com/" component={FacebookOutlined} color='#4267B2'/>
-                </IconsWrapper>
-                <IconsWrapper style={{width:"50px",margin: "0 10px"}}>
-                    <LinkedImg href="https://twitter.com/" component={TwitterOutlined} color='#03A9F4'/>
-                </IconsWrapper >
-                <IconsWrapper style={{width:"50px",margin: "0 10px"}} >
-                    <LinkedImg href="https://www.linkedin.com/home" component={LinkedinOutlined} color='#007AB9'/>
-                </IconsWrapper>
-                <IconsWrapper style={{width:"50px",margin: "0 10px"}}>
-                    <LinkedImg href="https://youtube.com/" component={YoutubeOutlined} color='#FF0000'/>
+                <IconsWrapper >
+                    {data.map((item) => (
+                        <LinkedImg
+                            key={item.key}
+                            image={item.image}
+                            link={item.link}
+                        />
+                    ))}
                 </IconsWrapper>
             </Wrapper>
-
-            <StyledText style ={{color:"black"}}>2023 IoT © Myhailo Dovbak</StyledText>
+            <StyledText >2023 IoT © Myhailo Dovbak</StyledText>
         </StyledFooter>
     );
 }
-
+const data = [
+    {
+        key: 1,
+        image: facebook,
+        link: "https://www.facebook.com/",
+    },
+    {
+        key :2,
+        image: gplus,
+        link: 40.99,
+    },
+    {
+        key:3,
+        image: linkedin,
+        link: "https://www.linkedin.com/home",
+    },
+    {
+        key:4,
+        image: twitter,
+        link: "https://twitter.com/",
+    },
+];
 export default Footer;
