@@ -1,7 +1,9 @@
 import React from "react";
 import { Card, Button } from "antd";
 import { Footer } from "./CardItem.styled";
+
 const { Meta } = Card;
+
 
 const CardItem = ({ title = 'No title.', text, imageSrc, price }) => (
     <Card
@@ -17,7 +19,7 @@ const CardItem = ({ title = 'No title.', text, imageSrc, price }) => (
             }}title={title} description={text} />
         <Footer>
             <p>${price}</p>
-            <Button style ={{backgroundColor:"orangered"}} >Buy Now</Button>
+            <Button style ={{backgroundColor:"orangered"}}>Buy Now</Button>
         </Footer>
     </Card>
 );

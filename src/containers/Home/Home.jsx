@@ -3,9 +3,11 @@ import main_photo from "../../icons/main_photo.webp"
 import t50hi from "../../icons/T50HI.jpg";
 import tws from "../../icons/200TWS.webp";
 import n760 from "../../icons/760N.jpg";
-import { HorizontalLine,HomeWrapper, DesctriptionWrapper, CardsWrapper, ButtonWrapper } from "./Home.styled";
+import { HorizontalLine,HomeWrapper, DesctriptionWrapper, CardsWrapper, ButtonWrapper,ImageStyled } from "./Home.styled";
 import { Card, Button } from "antd";
 import CardItem from "../../containers/CardItem/CardItem";
+import { Link } from "react-router-dom";
+import PrimaryButton from "../../containers/PrimaryButton/PrimaryButton";
 
 const { Meta } = Card;
 
@@ -13,7 +15,7 @@ function Home() {
     return (
         <HomeWrapper>
             <DesctriptionWrapper>
-                <img style={{width:"500px", height:"350px"}} src={main_photo} alt=""/>
+                <ImageStyled src={main_photo} alt=""/>
                 <div style={{marginLeft:"40px"}}>
                     <h2 style = {{color :"orange"}}>JBL HEADPHONES</h2>
                     <p>The sound quality is superb, with deep bass and clean, sharp highs. The earphones are comfortable, with a solid fit that stays in place even during strenuous exercises. With a battery life of up to 16 hours, you can listen to music continuously throughout the day.</p>
@@ -34,7 +36,7 @@ function Home() {
                 ))}
             </CardsWrapper>
             <ButtonWrapper>
-                <Button style ={{backgroundColor:"orangered",margin:"auto"}} size="large">View more</Button>
+                <PrimaryButton onClick={(e) => {}} size="large"><Link to="/catalog">View more</Link></PrimaryButton>
             </ButtonWrapper>
         </HomeWrapper>
     );

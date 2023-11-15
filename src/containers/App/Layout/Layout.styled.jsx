@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-
+import Menu from "antd";
 export const StyledHeader = styled.div`
     margin-bottom: 20px;
     padding: 0px 50px;
@@ -8,6 +8,7 @@ export const StyledHeader = styled.div`
     border-style: solid;
     border-color: black;
     display: flex;
+    color:orangered;
 `;
 
 export const LinkingWrapper = styled.div`
@@ -15,6 +16,7 @@ export const LinkingWrapper = styled.div`
     margin-right: 100px;
     display: flex;
     justify-content: center;
+    color:orangered;
 
     li {
         padding: 10px;
@@ -24,3 +26,4 @@ export const LinkingWrapper = styled.div`
         margin: 0 16px;
     }
 `;
+

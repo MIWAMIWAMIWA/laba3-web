@@ -37,4 +37,11 @@ export const StyledText = styled.p`
     color: #8E8E93;
     margin-top: 15px;
     text-align: center;
+    color:black;
 `;
+
+export const LogoWr = styled.img`
+  alignItems: center;
+  margin:auto;`
+;
+
