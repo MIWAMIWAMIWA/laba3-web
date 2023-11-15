@@ -1,6 +1,6 @@
 import React from "react";
 import logo from "../../../icons/logo.png";
-import { StyledFooter, IconsWrapper, Wrapper, StyledText } from "./Footer.styled";
+import { StyledFooter, IconsWrapper, Wrapper, StyledText ,LogoWr} from "./Footer.styled";
 import LinkedImg from "../../../containers/LinkedImg/LinkedImg";
 import facebook from "../../../icons/facebook.png";
 import gplus from "../../../icons/google-plus.png";
@@ -15,7 +15,7 @@ function Footer() {
                     <p>It is  known for its superior quality audio speakers</p>
                 </div>
                 
-                <img style ={{ alignItems: 'center',margin:"auto"}} src={logo} alt="" width={100}/>
+                <LogoWr src={logo} alt="" width={100}/>
 
                 <IconsWrapper >
                     {data.map((item) => (
@@ -27,8 +27,7 @@ function Footer() {
                     ))}
                 </IconsWrapper>
             </Wrapper>
-
-            <StyledText style ={{color:"black"}}>2023 IoT © Myhailo Dovbak</StyledText>
+            <StyledText >2023 IoT © Myhailo Dovbak</StyledText>
         </StyledFooter>
     );
 }

@@ -28,23 +28,23 @@ const items = [
 ];
 
 function Layout() {
-    const [current, setCurrent] = useState('home');
+    const [currentPage, setCurrentPage] = useState('home');
 
     const onClick = (e) => {
         console.log('click ', e);
-        setCurrent(e.key);
+        setCurrentPage(e.key);
     };
     
     return (
-        <StyledHeader style ={{color:"orangered"}}>
+        <StyledHeader >
             <img src={logo} alt="" width={100} />
 
-            <LinkingWrapper style ={{color:"orangered"}}>
+            <LinkingWrapper >
                 <Menu style ={{color:"orangered"}}
-                    onClick={onClick} 
-                    selectedKeys={[current]} 
-                    mode="horizontal" 
-                    defaultSelectedKeys={['mail']}
+                    onClick={onClick}
+                      selectedKeys={[]}
+                      mode="horizontal"
+                      defaultSelectedKeys={['home']}
                     items={items}
                 />
             </LinkingWrapper>

@@ -35,3 +35,8 @@ export const HorizontalLine = styled.hr`
     height: 3px;
     border: 0;
 `;
+
+export const ImageStyled = styled.img`
+  width:500px;
+  height:350px;
+`
