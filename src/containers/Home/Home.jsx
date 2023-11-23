@@ -1,17 +1,38 @@
-import React from "react";
+import React, {useContext, useState} from "react";
 import main_photo from "../../icons/main_photo.webp"
-import t50hi from "../../icons/T50HI.jpg";
-import tws from "../../icons/200TWS.webp";
-import n760 from "../../icons/760N.jpg";
 import { HorizontalLine,HomeWrapper, DesctriptionWrapper, CardsWrapper, ButtonWrapper,ImageStyled } from "./Home.styled";
 import { Card, Button } from "antd";
 import CardItem from "../../containers/CardItem/CardItem";
 import { Link } from "react-router-dom";
 import PrimaryButton from "../../containers/PrimaryButton/PrimaryButton";
-
+import {ItemContext} from "../ItemContext/Items";
+const MAX_TEXT_LEN = 150;
 const { Meta } = Card;
+let currentItemCount = 3;
 
 function Home() {
+    const data = useContext(ItemContext);
+    const [itemsToDisplay, setItemsToDisplay] = useState(data
+        .sort((a,b) => b.rating - a.rating)
+        .slice(0, currentItemCount));
+    const [buttonLabel, setButtonLabel] = useState("View more")
+
+    const showMore = (e) => {
+        e.preventDefault();
+        if (currentItemCount < data.length){
+            currentItemCount += 3;
+        } else {
+            currentItemCount = 3;
+        }
+        setItemsToDisplay(data
+            .sort((a,b) => b.rating - a.rating)
+            .slice(0, currentItemCount));
+        if (currentItemCount >= data.length) {
+            setButtonLabel("View less");
+        } else {
+            setButtonLabel("View more");
+        }
+    }
     return (
         <HomeWrapper>
             <DesctriptionWrapper>
@@ -25,45 +46,25 @@ function Home() {
             <HorizontalLine />
             <h2>Our Best Products</h2>
             <CardsWrapper>
-                {data.map((item) => (
-                    <CardItem
-                        key={item.key} // Make sure to provide a unique key when mapping an array of components
+                {itemsToDisplay.map((item) => (
+                    <CardItem style ={{
+                    }}
+                        key={item.id}
+                        rating={item.rating}
+                        id={item.id}
                         title={item.title}
-                        text={item.text}
+                        text={item.text.length > MAX_TEXT_LEN ? `${item.text.substring(0, MAX_TEXT_LEN)}...` : item.text}
                         imageSrc={item.image}
                         price={item.price}
                     />
                 ))}
             </CardsWrapper>
             <ButtonWrapper>
-                <PrimaryButton onClick={(e) => {}} size="large"><Link to="/catalog">View more</Link></PrimaryButton>
+                <PrimaryButton onClick={showMore} size="large">{ buttonLabel }</PrimaryButton>
             </ButtonWrapper>
         </HomeWrapper>
     );
 }
-const data = [
-    {
-        key: 't50',
-        title: "T50HI",
-        text: "Its a very good ear phone to listen to music. If you need to use it for any voice or song recording, the switch is loose & creates noise even with slight shake in cable, we need to hold the mic unit carefully to prevent noise.",
-        image: t50hi,
-        price: 20.99,
-    },
-    {
-        key :'200t',
-        title: "200TWS",
-        text:"To put it simply, the Wave 200TWS is an excellent option if you’re searching for a pair that’s below $100. They’re decent and great-looking true wireless earbuds, thus, setting the bar for other affordable earbuds to come. .",
-        image: tws,
-        price: 40.99,
-    },
-    {
-        key:'760n',
-        title: '760N',
-        text:
-            "Your music, nothing else matters. Over-ear, super comfortable, powerful, the JBL Tune 760NC keep the promise. The active noise cancelling blocks unnecessary distractions to let you focus on what matters, for up to 35 hours.",
-        image: n760,
-        price: 39.99,
-    },
-];
+
 
 export default Home;
