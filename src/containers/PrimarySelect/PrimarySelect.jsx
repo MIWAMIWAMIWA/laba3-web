@@ -8,7 +8,9 @@ const PrimarySelect = ({ children, ...props }) => (
 
 export const sortOptions = [
     { value: "no_sort", label: "No sort" },
+    { value: "name", label: "Sort by name" },
     { value: "price", label: "Sort by price" },
+    { value: "popularity", label: "Sort by popularity" },
 ];
 
 // Define filter options
@@ -21,7 +23,8 @@ export const filterOptions = [
 
 // Define second sort options
 export const sortOptions2 = [
-    { value: "no_sort", label: "No sort" },
-    { value: "name", label: "Sort by name" },
+    { value: false, label: "No reverse" },
+    { value: true, label: "Reverse the list" },
 ];
+
 export default PrimarySelect;
