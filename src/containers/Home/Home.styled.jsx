@@ -20,8 +20,9 @@ export const DesctriptionWrapper = styled.div`
 
 export const CardsWrapper = styled.div`
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-around;
-    margin: 50px 50px;
+   margin: 10px 10px 10px 10px;
 `;
 
 export const ButtonWrapper = styled.div`
