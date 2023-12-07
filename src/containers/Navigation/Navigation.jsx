@@ -8,6 +8,7 @@ import { ItemContext } from "../ItemContext/Items"
 import t50hi from "../../icons/T50HI.jpg";
 import tws from "../../icons/200TWS.webp";
 import n760 from "../../icons/760N.jpg";
+import CartPage from "../CartPage/CartPage";
 
 const data = [
     {
@@ -103,7 +104,7 @@ function Navigation() {
                 <Routes>
                     <Route path="/" element={<Home />} key="/"/>
                     <Route path="/catalog" element={<Catalog />} key="/catalog"/>
-                    <Route path="/cart" element={<h1>Cart</h1>} key="/cart"/>
+                    <Route path="/cart" element={<CartPage />} />
                     <Route path="/item/:itemId" element={<ItemPage />} key="/cart"/>
                     <Route path="/*" element={<Navigate to="/"/>} key="/*"/>
                 </Routes>

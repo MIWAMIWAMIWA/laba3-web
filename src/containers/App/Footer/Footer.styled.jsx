@@ -2,14 +2,12 @@ import Icon from '@ant-design/icons';
 import styled from 'styled-components';
 
 export const StyledFooter = styled.div`
-    margin-top: 20px;
-    padding: 0px 50px;
-    border: 0px;
-    border-top: 3px;
-    border-bottom: 3px;
-    border-style: solid;
-    border-color: orangered;
-    background-color: orangered;
+  padding: 0px 50px;
+  border: 3px solid orangered;
+  border-right-width: 0px;
+  border-left-width: 0px;
+  background-color: orangered;
+  margin-top: auto;
 `;
 
 export const Wrapper = styled.div`
