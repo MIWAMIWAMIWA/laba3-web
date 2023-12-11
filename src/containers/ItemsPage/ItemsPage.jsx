@@ -1,7 +1,9 @@
-import React, { useContext } from "react";
+import React, { useState, useEffect } from "react";
 import {useParams, Link, useNavigate} from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { InputNumber, Rate } from 'antd';
 import PrimaryButton from "../../containers/PrimaryButton/PrimaryButton";
+import { addToCart } from '../redux/CartPageActions';
 import {
     CategoryWrapper,
     Description,
@@ -11,69 +13,88 @@ import {
     SubmitContainer,
     Title
 } from "./ItemsPage.styled";
-import { ItemContext } from "../ItemContext/Items";
-
-const YourComponent = ({ currentItem, isInStock }) => {
-    const navigate = useNavigate();
-
-}
+import { getHeadphoneById } from "../App/API/api";
 
 const ItemPage = () => {
     const { itemId } = useParams();
-    const data = useContext(ItemContext);
+    const navigate = useNavigate();
+    const [currentItem, setCurrentItem] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [imagePath, setImagePath] = useState(null);
+    const dispatch = useDispatch();
 
-    let currentItem = null || data["" + itemId];;
-    /*for (const i of data) {
-        if (i.id === itemId) {
-            currentItem = i;
-        }
-    }*/
+    const handleAddToCart = () => {
+        dispatch(addToCart(currentItem));
+        navigate('/cart');
+    };
 
-    if (currentItem == null) {
-        return (<div>ERROR 404</div>)
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const item = await getHeadphoneById({ id:itemId });
+                console.log(itemId)
+                setCurrentItem(item);
+                const module = await import(`../../icons/${item.image}`);
+                setImagePath(module.default);
+
+            } catch (error) {
+                setError(error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        fetchData();
+    }, [itemId]);
+
+    if (loading) {
+        return <div>Loading...</div>;
     }
 
-    const isInStock = currentItem.quantity ? true: false;
+    if (error || currentItem == null) {
+        return <div>ERROR 404</div>;
+    }
+
+    const isInStock = currentItem.quantity > 0;
 
     return (
-        <div >
-
-            <ItemContainer >
-                <img src={currentItem.image} alt="" />
+        <div>
+            <ItemContainer>
+                <img src={imagePath} alt="" />
                 <div>
-
-                    <Title>{ currentItem.title }</Title>
+                    <Title>{currentItem.title}</Title>
 
                     <CategoryWrapper>
-                        <Link to="#">{ currentItem.category }</Link>
+                        <Link to="#">{currentItem.category}</Link>
                         <div>Best Offer</div>
                         <h3>{currentItem.price}$</h3>
                     </CategoryWrapper>
                     <CategoryWrapper>
-                        <Description>{ currentItem.text }</Description>
+                        <Description>{currentItem.text}</Description>
                     </CategoryWrapper>
                     <SubmitContainer>
-
                         <div>
-                            { !isInStock && <p>Item is out of stock</p> }
+                            {!isInStock && <p>Item is out of stock</p>}
                             <InputNumber disabled={!isInStock} min={1} max={currentItem.quantity} defaultValue={1} />
-                            <PrimaryButton disabled={!isInStock}>Add to cart</PrimaryButton>
-                            <SelectMiwa >
+                            <PrimaryButton disabled={!isInStock} onClick={handleAddToCart} >Add to cart</PrimaryButton>
+                            <SelectMiwa>
                                 <option>Black</option>
                                 <option>Red</option>
                                 <option>Blue</option>
                                 <option>Yellow</option>
                             </SelectMiwa>
-                            <PrimaryButton onClick={(e) => {}}><Link to="/catalog">GO back</Link></PrimaryButton>
+                            <PrimaryButton>
+                                <Link to="/catalog">Go back</Link>
+                            </PrimaryButton>
                         </div>
                         <br />
                         <Rate allowHalf disabled defaultValue={currentItem.rating} />
                     </SubmitContainer>
                 </div>
             </ItemContainer>
-
         </div>
-    )
+    );
 };
 
 export default ItemPage;
