@@ -1,37 +1,49 @@
 const initialState = {
-  items: [],
+  lists: {},
 };
 
 const cartPageReducer = (state = initialState, action) => {
   switch (action.type) {
     case 'ADD_TO_CART':
-      const existingItem = state.items.find(item => item.id === action.payload.id);
+      const { key } = action.payload;
+      const existingItem = (state.lists[key] || []).find(item => item.id === action.payload.id);
 
       if (existingItem) {
         return {
           ...state,
-          items: state.items.map(item =>
-            item.id === action.payload.id ? { ...item, quantity: item.quantity + 1 } : item
-          ),
+          lists: {
+            ...state.lists,
+            [key]: state.lists[key].map(item =>
+                item.id === action.payload.id ? { ...item, quantity: item.quantity + 1 } : item
+            ),
+          },
         };
       } else {
         return {
           ...state,
-          items: [...state.items, { ...action.payload, quantity: 1 }],
+          lists: {
+            ...state.lists,
+            [key]: [...(state.lists[key] || []), { ...action.payload, quantity: 1 }],
+          },
         };
       }
     case 'INCREMENT_ITEM_QUANTITY':
       return {
         ...state,
-        items: state.items.map(item =>
-          item.id === action.payload ? { ...item, quantity: item.quantity + 1 } : item
-        ),
+        lists: {
+          ...state.lists,
+          [action.payload.key]: (state.lists[action.payload.key] || []).map(item =>
+              item.id === action.payload.id ? { ...item, quantity: item.quantity + 1 } : item
+          ),
+        },
       };
-      case 'DECREMENT_ITEM_QUANTITY':
-        return {
-          ...state,
-          items: state.items.map(item => {
-            if (item.id === action.payload) {
+    case 'DECREMENT_ITEM_QUANTITY':
+      return {
+        ...state,
+        lists: {
+          ...state.lists,
+          [action.payload.key]: (state.lists[action.payload.key] || []).map(item => {
+            if (item.id === action.payload.id) {
               if (item.quantity === 1) {
                 return null;
               } else {
@@ -40,15 +52,27 @@ const cartPageReducer = (state = initialState, action) => {
             }
             return item;
           }).filter(Boolean),
-        };
-        case 'REMOVE_FROM_CART':
-          return {
-            ...state,
-            items: state.items.filter(item => item.id !== action.payload),
-          };
-        default:
-          return state;
-      }
+        },
+      };
+    case 'REMOVE_ALL_ITEMS_FROM_CART':
+      return {
+        ...state,
+        lists: {
+          ...state.lists,
+          [action.payload.key]: [],
+        },
+      };
+    case 'REMOVE_FROM_CART':
+      return {
+        ...state,
+        lists: {
+          ...state.lists,
+          [action.payload.key]: (state.lists[action.payload.key] || []).filter(item => item.id !== action.payload.id),
+        },
+      };
+    default:
+      return state;
+  }
 };
 
 export default cartPageReducer;

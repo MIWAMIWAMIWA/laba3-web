@@ -7,7 +7,8 @@ import {
 import { Menu } from "antd";
 import logo from "../../../icons/logo.png";
 import { LinkingWrapper, StyledHeader } from "./Layout.styled";
-import { BrowserRouter, Link } from "react-router-dom";
+import {BrowserRouter, Link, useNavigate} from "react-router-dom";
+import PrimaryButton from "../../PrimaryButton/PrimaryButton";
 
 const items = [
     {
@@ -29,7 +30,16 @@ const items = [
 
 function Layout() {
     const [currentPage, setCurrentPage] = useState('home');
+    const navigate = useNavigate();
 
+    const handleSignOut = () => {
+        const confirmed = window.confirm('Are you sure you want to sign out?');
+
+        if (confirmed) {
+            localStorage.removeItem('loggedInUser');
+            navigate('/login');
+        }
+    };
     const onClick = (e) => {
         console.log('click ', e);
         setCurrentPage(e.key);
@@ -48,6 +58,7 @@ function Layout() {
                     items={items}
                 />
             </LinkingWrapper>
+            <PrimaryButton style ={{ margin: 'auto', display: 'block'}}onClick={handleSignOut}>Sign out</PrimaryButton>
         </StyledHeader>
     );
 }

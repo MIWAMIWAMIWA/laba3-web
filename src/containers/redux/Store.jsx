@@ -10,5 +10,6 @@ const persistConfig = {
 
 const persistedReducer = persistReducer(persistConfig, cartPageReducer);
 
+
 export const store = createStore(persistedReducer);
 export const persistor = persistStore(store);
