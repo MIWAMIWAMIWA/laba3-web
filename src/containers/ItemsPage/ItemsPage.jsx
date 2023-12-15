@@ -23,9 +23,21 @@ const ItemPage = () => {
     const [error, setError] = useState(null);
     const [imagePath, setImagePath] = useState(null);
     const dispatch = useDispatch();
+    const [currentNumber, setCurrentNumber] = useState(1);
+
+    const handleNumberChange = (e) => {
+        const newValue = parseInt(e.value, 10);
+        setCurrentNumber(newValue);
+    };
+
 
     const handleAddToCart = () => {
-        dispatch(addToCart(currentItem));
+        const currentUserKey = localStorage.getItem('loggedInUser');
+
+        for (let i = 0; i < currentNumber; i++) {
+            dispatch(addToCart(currentItem, currentUserKey));
+        }
+
         navigate('/cart');
     };
 
@@ -76,7 +88,12 @@ const ItemPage = () => {
                     <SubmitContainer>
                         <div>
                             {!isInStock && <p>Item is out of stock</p>}
-                            <InputNumber disabled={!isInStock} min={1} max={currentItem.quantity} defaultValue={1} />
+                            <InputNumber disabled={!isInStock} min={1} max={currentItem.quantity} defaultValue={1} value={currentNumber}
+                                         onChange={(value) => {
+                                             // Ensure that value is a valid number
+                                             const newValue = parseInt(value, 10);
+                                             setCurrentNumber(isNaN(newValue) ? 1 : newValue);
+                                         }}/>
                             <PrimaryButton disabled={!isInStock} onClick={handleAddToCart} >Add to cart</PrimaryButton>
                             <SelectMiwa>
                                 <option>Black</option>

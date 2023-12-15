@@ -32,14 +32,21 @@ export const ItemTitleP = styled.p`
   margin: 10px;
   display: flex;
   align-items: center;
+  padding-right: 40px;
+  width:100px;
 `
 
 export const ItemRow = styled.div`
   display: flex;
   align-items: center;
   margin: 10px;
+  justify-content: space-between;
 `
 
 export const ItemStats = styled.p`
   margin: 10px;
+  width : 35px;
+  display: flex;
+  align-items: center;
+  
 `

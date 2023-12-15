@@ -1,4 +1,4 @@
-import React, {useContext, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 import { FiltersContainer, ItemsContainer, SelectWrapper} from "./Catalog.styled";
 import CardItem from "../../containers/CardItem/CardItem";
 import PrimarySelect from "../../containers/PrimarySelect/PrimarySelect";
@@ -25,6 +25,15 @@ const Catalog = () => {
     const [filterMode, setFilterMode] = useState("all");
     const [searchValue, setSearchValue] = useState("");
     const [reverseSort, setReverseSort] = useState(false);
+    useEffect(() => {
+        // This function will be called when the component is mounted
+        applyFilters({
+            sort: sortMode,
+            filter: filterMode,
+            search: searchValue,
+            reverse: reverseSort
+        });
+    }, []);
     const applyFilters = async ({
                                     sort = sortMode,
                                     filter = filterMode,
